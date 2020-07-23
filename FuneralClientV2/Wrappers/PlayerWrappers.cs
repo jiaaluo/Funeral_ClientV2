@@ -20,6 +20,8 @@ namespace FuneralClientV2.Wrappers
 
         public static APIUser GetAPIUser(this Player player) { return player.field_Private_APIUser_0; }
 
+        public static ApiAvatar GetAPIAvatar(this VRCPlayer player) { return player.prop_ApiAvatar_0; }
+
         public static Player GetVRC_Player(this VRCPlayer player) { return player.field_Private_Player_0; }
 
         public static VRCPlayer GetVRCPlayer(this Player player) { return player.field_Internal_VRCPlayer_0; }

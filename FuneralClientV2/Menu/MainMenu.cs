@@ -41,7 +41,8 @@ namespace FuneralClientV2.Menu
             new FunVRMenu(this);
             new ProtectionsVRMenu(this);
             new TargetVRMenu();
-            new QMToggleButton(this, 4, 1, "Clear\nConsole", delegate
+            new FavoritesVRMenu(this);
+            new QMToggleButton(this, 1, 2, "Clear\nConsole", delegate
             {
                 GeneralUtils.ClearConsole = true;
             }, "Don't Clear\nConsole", delegate

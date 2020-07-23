@@ -1,6 +1,8 @@
-﻿using FuneralClientV2.Menu;
+﻿using FuneralClientV2.Discord;
+using FuneralClientV2.Menu;
 using FuneralClientV2.Modules;
 using FuneralClientV2.Patching;
+using FuneralClientV2.Settings;
 using FuneralClientV2.Utils;
 using MelonLoader;
 using System;
@@ -31,6 +33,8 @@ namespace FuneralClientV2
         public override void OnApplicationStart()
         {
             ConsoleUtil.SetTitle("Funeral Client V2 = Developed by Yaekith");
+            Configuration.CheckExistence();
+            DiscordRPC.Start();
             Modules.Add(new GeneralHandlers());
             Modules.Add(new CleanConsoleModule());
             ConsoleUtil.Info("Waiting for VRChat UI Manager to Initialise..");

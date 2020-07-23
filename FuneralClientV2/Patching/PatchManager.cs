@@ -30,7 +30,7 @@ namespace FuneralClientV2.Patching
                 new Patch("WorldTriggers", AccessTools.Method(typeof(VRC_EventHandler), "InternalTriggerEvent", null, null), GetLocalPatch("TriggerEvent"), null),
                 new Patch("HWIDSpoofer", typeof(VRC.Core.API).GetMethod("get_DeviceID"), GetLocalPatch("SpoofDeviceID"), null),
                 new Patch("AntiKick", typeof(ModerationManager).GetMethod("KickUserRPC"), GetLocalPatch("AntiKick"), null),
-                //new Patch("AntiBlock", typeof(ModerationManager).GetMethod("BlockStateChangeRPC"), GetLocalPatch("AntiBlock"), null),
+                new Patch("AntiBlock", typeof(ModerationManager).GetMethod("BlockStateChangeRPC"), GetLocalPatch("AntiBlock"), null),
                 new Patch("ForceClone", typeof(UserInteractMenu).GetMethod("Update"), GetLocalPatch("CloneAvatarPrefix"), null),
                 new Patch("EmoteMenuFix", typeof(VRCUiCurrentRoom).GetMethod("Method_Private_Void_17"), GetLocalPatch("NonExistentPrefix"), null) //stupid fix to fix emote menu not working :(
             };
@@ -39,6 +39,9 @@ namespace FuneralClientV2.Patching
 
         public static void ApplyPatches()
         {
+            Imports.Hook((IntPtr)typeof(ModerationManager).GetField("NativeMethodInfoPtr_Method_Public_Boolean_String_String_String_0", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null), GetDetourMethod("FalseVoidPatch"));
+            Imports.Hook((IntPtr)typeof(ModerationManager).GetField("NativeMethodInfoPtr_Method_Public_Boolean_String_String_String_1", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null), GetDetourMethod("FalseVoidPatch"));
+
             var patches = RetrievePatches();
             foreach (var patch in patches) patch.ApplyPatch();
             ConsoleUtil.Info("All Patches have been applied successfully.");
@@ -70,8 +73,7 @@ namespace FuneralClientV2.Patching
             //to-do; add support for moderation logging
             var us = GeneralWrappers.GetPlayerManager().GetPlayer(__0);
             var them = __2.GetAPIUser();
-            if (__1 && us.GetAPIUser().id == PlayerWrappers.GetCurrentPlayer().GetVRC_Player().GetAPIUser().id && GeneralUtils.AntiBlock) return false;
-            else return true;
+            return !GeneralUtils.AntiBlock;
         }
 
         private static void NonExistentPrefix() { }

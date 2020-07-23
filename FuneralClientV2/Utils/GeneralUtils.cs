@@ -1,4 +1,6 @@
-﻿using FuneralClientV2.Wrappers;
+﻿using FuneralClientV2.API;
+using FuneralClientV2.Settings;
+using FuneralClientV2.Wrappers;
 using RubyButtonAPI;
 using System;
 using System.Collections.Generic;
@@ -47,6 +49,8 @@ namespace FuneralClientV2.Utils
 
         private static System.Random random = new System.Random();
 
+        public static string Version = "Pre Release v1.1";
+
         public static void InformHudText(Color color, string text)
         {
             VRCUiManager.prop_VRCUiManager_0.hudMessageText.color = color;
@@ -82,6 +86,12 @@ namespace FuneralClientV2.Utils
                 if (button2.getOnText().ToLower().Contains(Name.ToLower())) Button = button2;
             }
             if (Button != null) Button.setToggleState(state);
+        }
+
+        public static FavoritedAvatar GetExtendedFavorite(string ID)
+        {
+            foreach(var avatar in Configuration.GetConfig().ExtendedFavoritedAvatars) if (avatar.ID == ID) return avatar;
+            return null;
         }
     }
 }
