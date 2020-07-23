@@ -1,4 +1,5 @@
-﻿using FuneralClientV2.Utils;
+﻿using FuneralClientV2.Settings;
+using FuneralClientV2.Utils;
 using Il2CppSystem.Threading;
 using RubyButtonAPI;
 using System;
@@ -14,7 +15,7 @@ namespace FuneralClientV2.Menu
 {
     public class MainMenu : QMNestedButton
     {
-        public MainMenu() : base("ShortcutMenu", 5, 2, "Funeral\nV2", "A client for vrchat's il2cpp system, hopefully just an updated version of my old publicly sold client, with more features and fixed bugs of course.", Color.red, Color.white, Color.red, Color.cyan)
+        public MainMenu() : base("ShortcutMenu", Configuration.GetConfig().MainMenuButtonX, Configuration.GetConfig().MainMenuButtonY, "Funeral\nV2", "A client for vrchat's il2cpp system, hopefully just an updated version of my old publicly sold client, with more features and fixed bugs of course.", Color.red, Color.white, Color.red, Color.cyan)
         {
             new QMSingleButton(this, 1, 0, "GitHub", new Action(() =>
             {
@@ -44,11 +45,13 @@ namespace FuneralClientV2.Menu
             new FavoritesVRMenu(this);
             new QMToggleButton(this, 1, 2, "Clear\nConsole", delegate
             {
-                GeneralUtils.ClearConsole = true;
+                Configuration.GetConfig().CleanConsole = true;
+                Configuration.SaveConfiguration();
             }, "Don't Clear\nConsole", delegate
             {
-                GeneralUtils.ClearConsole = false;
-            }, "Decide whether you want to clear your console every 10 seconds, or not", Color.red, Color.white);
+                Configuration.GetConfig().CleanConsole = false;
+                Configuration.SaveConfiguration();
+            }, "Decide whether you want your console to be clean constantly", Color.red, Color.white).setToggleState(Configuration.GetConfig().CleanConsole);
         }
     }
 }

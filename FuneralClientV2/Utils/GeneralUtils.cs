@@ -23,24 +23,6 @@ namespace FuneralClientV2.Utils
 
         public static bool SpinBot = false;
 
-        public static bool Headflipper = false;
-
-        public static bool DeafenNonFriends = false;
-
-        public static bool AntiKick = true;
-
-        public static bool AntiBlock = false;
-
-        public static bool AntiPublicBan = true;
-
-        public static bool LogModerations = false;
-
-        public static bool Optimization = false;
-
-        public static bool ClearConsole = false;
-
-        public static bool RainbowButtons = true;
-
         public static List<string> Deafened = new List<string>();
 
         public static Vector3 SavedGravity = Physics.gravity;
@@ -49,12 +31,14 @@ namespace FuneralClientV2.Utils
 
         private static System.Random random = new System.Random();
 
-        public static string Version = "Pre Release v1.1";
+        public static string Version = "Pre Release v1.2";
 
         public static void InformHudText(Color color, string text)
         {
+            var NormalColor = VRCUiManager.prop_VRCUiManager_0.hudMessageText.color;
             VRCUiManager.prop_VRCUiManager_0.hudMessageText.color = color;
             VRCUiManager.prop_VRCUiManager_0.Method_Public_Void_String_0($"[FUNERAL V2] {text}");
+            VRCUiManager.prop_VRCUiManager_0.hudMessageText.color = NormalColor;
         }
 
         public static void ToggleColliders(bool toggle)
@@ -92,6 +76,23 @@ namespace FuneralClientV2.Utils
         {
             foreach(var avatar in Configuration.GetConfig().ExtendedFavoritedAvatars) if (avatar.ID == ID) return avatar;
             return null;
+        }
+
+        public static bool IsGrabifyLink(string url)
+        {
+            List<string> Domains = new List<string>()
+            {
+                "grabify.link",
+                "leancoding.co",
+                "stopify.co",
+                "freegiftcards.co",
+                "joinmy.site",
+                "curiouscat.club",
+                "catsnthings.fun",
+                "catsnthing.com"
+            };
+            foreach (var domain in Domains) if (url.ToLower().Contains(domain.ToLower())) return true;
+            return false;
         }
     }
 }

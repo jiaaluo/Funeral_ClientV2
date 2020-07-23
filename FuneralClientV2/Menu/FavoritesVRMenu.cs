@@ -39,7 +39,6 @@ namespace FuneralClientV2.Utils
                 var currentAvatar = PlayerWrappers.GetCurrentPlayer().GetAPIAvatar();
                 Configuration.GetConfig().ExtendedFavoritedAvatars.Add(new FavoritedAvatar(currentAvatar.name, currentAvatar.id, currentAvatar.authorName, currentAvatar.authorId));
                 Configuration.SaveConfiguration();
-                Configuration.LoadConfiguration();
                 GeneralWrappers.GetVRCUiPopupManager().AlertPopup("<color=cyan>Success!</color>", "<color=green>Successfully added your current Avatar to extended favorites</color>");
             }, "Adds your current avatar to the extended favorites list", Color.red, Color.white);
 
@@ -48,7 +47,6 @@ namespace FuneralClientV2.Utils
                 var currentAvatar = GeneralUtils.GetExtendedFavorite(PlayerWrappers.GetCurrentPlayer().GetAPIAvatar().id);
                 Configuration.GetConfig().ExtendedFavoritedAvatars.Remove(currentAvatar);
                 Configuration.SaveConfiguration();
-                Configuration.LoadConfiguration();
                 GeneralWrappers.GetVRCUiPopupManager().AlertPopup("<color=cyan>Success!</color>", "<color=green>Successfully removed your current Avatar from extended favorites</color>");
             }, "Removes your current avatar from the extended favorites list", Color.red, Color.white);
 
@@ -72,7 +70,6 @@ namespace FuneralClientV2.Utils
                             {
                                 Configuration.GetConfig().ExtendedFavoritedAvatars.Remove(avatar);
                                 Configuration.SaveConfiguration();
-                                Configuration.LoadConfiguration();
                                 GeneralWrappers.GetVRCUiPopupManager().AlertPopup("<color=cyan>Success!</color>", "<color=green>Successfully removed this Avatar from extended favorites</color>");
                             }
                             else
@@ -101,7 +98,6 @@ namespace FuneralClientV2.Utils
                         {
                             Configuration.GetConfig().ExtendedFavoritedAvatars.Remove(avatar);
                             Configuration.SaveConfiguration();
-                            Configuration.LoadConfiguration();
                             GeneralWrappers.GetVRCUiPopupManager().AlertPopup("<color=cyan>Success!</color>", "<color=green>Successfully removed this Avatar from extended favorites</color>");
                         }
                         else

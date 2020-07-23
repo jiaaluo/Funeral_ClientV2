@@ -19,14 +19,14 @@ namespace FuneralClientV2.Utils
             }, "Disable\nSpin Bot", delegate
             {
                 GeneralUtils.SpinBot = false;
-            }, "Toggle the spin bot and go zooming in circles lol", Color.red, Color.white);
+            }, "Toggle the spin bot and go zooming in circles lol", Color.red, Color.white).setToggleState(GeneralUtils.SpinBot);
             new QMToggleButton(this, 2, 0, "Enable\nWorld Triggers", delegate
             {
                 GeneralUtils.WorldTriggers = true;
             }, "Disable\nWorld Triggers", delegate
             {
                 GeneralUtils.WorldTriggers = false;
-            }, "Decide whether you want other people to see your interactions with \"local\" triggers.", Color.red, Color.white);
+            }, "Decide whether you want other people to see your interactions with \"local\" triggers.", Color.red, Color.white).setToggleState(GeneralUtils.WorldTriggers);
         }
     }
 }

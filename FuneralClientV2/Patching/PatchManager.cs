@@ -1,4 +1,5 @@
-﻿using FuneralClientV2.Utils;
+﻿using FuneralClientV2.Settings;
+using FuneralClientV2.Utils;
 using FuneralClientV2.Wrappers;
 using Harmony;
 using Il2CppSystem.Runtime.Remoting.Messaging;
@@ -25,13 +26,22 @@ namespace FuneralClientV2.Patching
 
         private static List<Patch> RetrievePatches()
         {
-            List<Patch> patches = new List<Patch>()
+            var ConsoleWriteLine = typeof(Il2CppSystem.Console).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).First((System.Reflection.MethodInfo a) =>
+            {
+                if (a.Name != "WriteLine") return false;
+                if (a.GetParameters().Length == 1) return a.GetParameters()[0].ParameterType == typeof(string);
+                return false;
+            }); //ngl; emmie helped me with this, check out emmvrc here: https://www.thetrueyoshifan.com/emmvrc.php
+            List <Patch> patches = new List<Patch>()
             {
                 new Patch("WorldTriggers", AccessTools.Method(typeof(VRC_EventHandler), "InternalTriggerEvent", null, null), GetLocalPatch("TriggerEvent"), null),
                 new Patch("HWIDSpoofer", typeof(VRC.Core.API).GetMethod("get_DeviceID"), GetLocalPatch("SpoofDeviceID"), null),
                 new Patch("AntiKick", typeof(ModerationManager).GetMethod("KickUserRPC"), GetLocalPatch("AntiKick"), null),
                 new Patch("AntiBlock", typeof(ModerationManager).GetMethod("BlockStateChangeRPC"), GetLocalPatch("AntiBlock"), null),
                 new Patch("ForceClone", typeof(UserInteractMenu).GetMethod("Update"), GetLocalPatch("CloneAvatarPrefix"), null),
+                new Patch("CleanConsole", ConsoleWriteLine, GetLocalPatch("IL2CPPConsoleWriteLine"), null),
+                new Patch("DownloadImage", typeof(ImageDownloader).GetMethod("DownloadImage"), GetLocalPatch("AntiIpLogImage"), null),
+                new Patch("VideoPlayers", typeof(VRCSDK2.VRC_SyncVideoPlayer).GetMethod("AddURL"), GetLocalPatch("AntiVideoPlayerHijacking"), null),
                 new Patch("EmoteMenuFix", typeof(VRCUiCurrentRoom).GetMethod("Method_Private_Void_17"), GetLocalPatch("NonExistentPrefix"), null) //stupid fix to fix emote menu not working :(
             };
             return patches;
@@ -39,9 +49,6 @@ namespace FuneralClientV2.Patching
 
         public static void ApplyPatches()
         {
-            Imports.Hook((IntPtr)typeof(ModerationManager).GetField("NativeMethodInfoPtr_Method_Public_Boolean_String_String_String_0", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null), GetDetourMethod("FalseVoidPatch"));
-            Imports.Hook((IntPtr)typeof(ModerationManager).GetField("NativeMethodInfoPtr_Method_Public_Boolean_String_String_String_1", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null), GetDetourMethod("FalseVoidPatch"));
-
             var patches = RetrievePatches();
             foreach (var patch in patches) patch.ApplyPatch();
             ConsoleUtil.Info("All Patches have been applied successfully.");
@@ -65,7 +72,7 @@ namespace FuneralClientV2.Patching
         private static bool AntiKick(ref string __0, ref string __1, ref string __2, ref string __3, ref Player __4)
         {
             //to-do; add support for moderation logging
-            return !GeneralUtils.AntiKick;
+            return !Configuration.GetConfig().AntiKick;
         }
 
         private static bool AntiBlock(ref string __0, ref bool __1, ref Player __2)
@@ -73,7 +80,7 @@ namespace FuneralClientV2.Patching
             //to-do; add support for moderation logging
             var us = GeneralWrappers.GetPlayerManager().GetPlayer(__0);
             var them = __2.GetAPIUser();
-            return !GeneralUtils.AntiBlock;
+            return !Configuration.GetConfig().AntiBlock;
         }
 
         private static void NonExistentPrefix() { }
@@ -100,6 +107,27 @@ namespace FuneralClientV2.Patching
                 }
             }
             return result;
+        }
+
+        private static bool IL2CPPConsoleWriteLine(string __0) { return !Configuration.GetConfig().CleanConsole; }
+
+        private static bool VoidPatchFalse(ref bool __result)
+        {
+            __result = false;
+            return false;
+            //Credit: Four_DJ for finding the exact methods :3
+        }
+
+        private static bool AntiIpLogImage(string __0)
+        {
+            if (__0.StartsWith("https://api.vrchat.cloud/api/1/file/") || __0.StartsWith("https://api.vrchat.cloud/api/1/image/") || __0.StartsWith("https://d348imysud55la.cloudfront.net/thumbnails/") || __0.StartsWith("https://files.vrchat.cloud/thumbnails/")) return true;
+            return !Configuration.GetConfig().AntiIpLog;
+        }
+
+        private static bool AntiVideoPlayerHijacking(ref string __0)
+        {
+            if (Configuration.GetConfig().AntiIpLog && GeneralUtils.IsGrabifyLink(__0)) return false;
+            return true;
         }
         #endregion
     }

@@ -11,8 +11,24 @@ namespace FuneralClientV2.Settings
     {
         public List<FavoritedAvatar> ExtendedFavoritedAvatars = new List<FavoritedAvatar>();
 
-        public bool RainbowButtons = false; //coming soon :tm:
+        public bool CleanConsole = true;
 
-        public bool DevMode = true;
+        public bool Optimization = true;
+
+        public bool SpoofHWID = true;
+
+        public bool LogModerations = false;
+
+        public bool AntiKick = true;
+
+        public bool AntiPublicBan = true;
+
+        public bool AntiIpLog = true;
+
+        public bool AntiBlock = false;
+
+        public int MainMenuButtonX = 5;
+
+        public int MainMenuButtonY = 2;
     }
 }

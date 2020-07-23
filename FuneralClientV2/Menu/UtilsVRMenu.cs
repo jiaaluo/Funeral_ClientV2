@@ -29,7 +29,7 @@ namespace FuneralClientV2.Utils
                 Physics.gravity = GeneralUtils.SavedGravity;
                 GeneralUtils.Flight = false;
                 GeneralUtils.ToggleColliders(!GeneralUtils.Flight);
-            }, "Toggle Flight and move around within the air with ease!", Color.red, Color.white);
+            }, "Toggle Flight and move around within the air with ease!", Color.red, Color.white).setToggleState(GeneralUtils.Flight);
             new QMToggleButton(this, 2, 0, "Enable\nESP", delegate
             {
                 GeneralUtils.ESP = true;
@@ -56,7 +56,7 @@ namespace FuneralClientV2.Utils
                         GeneralWrappers.GetHighlightsFX().EnableOutline(array[i].transform.Find("SelectRegion").GetComponent<Renderer>(), GeneralUtils.ESP);
                     }
                 }
-            }, "Decide whether you want the upper game, get an advantage, and see all players anywhere within the world.", Color.red, Color.white);
+            }, "Decide whether you want the upper game, get an advantage, and see all players anywhere within the world.", Color.red, Color.white).setToggleState(GeneralUtils.ESP);
             new QMSingleButton(this, 3, 0, "Avatar\nBy\nID", delegate
             {
                 ConsoleUtil.Info("Enter Avatar ID: ");

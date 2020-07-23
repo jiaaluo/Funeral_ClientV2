@@ -25,7 +25,6 @@ namespace FuneralClientV2.Discord
                 {
                     new WebClient().DownloadFile("https://cdn-20.anonfiles.com/ZfN5JdHfo5/9db29b29-1595523322/discord-rpc.dll", "Dependencies/discord-rpc.dll");
                 }).Start();
-                ConsoleUtil.Info("Downloaded discord-rpc.dll");
             }
             eventHandlers = default(DiscordRpc.EventHandlers);
             presence.details = "A very cool public free cheat";

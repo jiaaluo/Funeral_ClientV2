@@ -248,7 +248,6 @@
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Menu\ProtectionsVRMenu.cs" />
     <Compile Include="Menu\TargetVRMenu.cs" />
-    <Compile Include="Modules\CleanConsoleModule.cs" />
     <Compile Include="Modules\GeneralHandlers.cs" />
     <Compile Include="Modules\VRCMod.cs" />
     <Compile Include="Patching\Patch.cs" />
